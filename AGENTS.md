@@ -1,23 +1,28 @@
 # Repository instructions
 
-This is a template for a third-party Homebrew tap. Nothing here hardcodes an
-owner or repository name: `scripts/tap_name.py` resolves `owner/tap` from the
-Git remote and the workflows resolve it from the Actions context, so keep new
-code owner-agnostic and set `HOMEBREW_TAP=owner/tap` to override it locally.
+This is a Copier template for a third-party Homebrew tap. The files rendered
+into a tap live under `template/`; `copier.yml` holds the questions. Nothing in
+the scripts or workflows hardcodes an owner or repository name: the workflows
+resolve `owner/tap` from the Actions context, so keep new code owner-agnostic.
+Only `README.md` and `LICENSE` are rendered from answers.
 
-Add formulae and casks with the scaffolder scripts, never by hand and never with
-`brew create`. `.claude/skills/homebrew-add/SKILL.md` has the full procedure,
-including which generated fields are guesses that need a human check. Run
-`python3 scripts/gen_readme_packages.py` after any formula or cask change; CI
-fails a stale catalog table.
+`template/.gitignore.jinja` is the Cobo-managed `.gitignore` stored under a
+`.jinja` name so it does not ignore files inside `template/`. It must render
+byte-for-byte identical; `cobo check --strict` in the rendered tap verifies it.
 
-Persist research notes in `docs/research/` and decisions as MADR records in
-`docs/adr/`. Give both sequential four-digit filename prefixes, link each ADR to
-its related research when present, and commit them with the related work.
+Skills for operating a generated tap live in
+[`homebrew-tap-skills`](https://github.com/hasansezertasan/homebrew-tap-skills),
+not here. Persist research notes in `docs/research/` and decisions as MADR
+records in `docs/adr/`. Give both sequential four-digit filename prefixes, link
+each ADR to its related research when present, and commit them with the related
+work.
 
-Agent skills are declared in `skills-lock.json` and restored with
-`npx skills experimental_install`; the generated trees are not vendored.
+Before opening a pull request, render the template and run the generated tap's
+checks (`.github/workflows/template.yml` does the same):
 
-Before opening a pull request, run `uvx prek run --all-files` (or
-`mise run style` for the YAML and Actions subset) and
-`python3 -m unittest discover -s tests`.
+```sh
+uvx copier copy --defaults --vcs-ref=HEAD -d tap_name=demo -d tap_owner=example \
+  -d copyright_holder=Example . /tmp/homebrew-demo
+cd /tmp/homebrew-demo && git init -q && git remote add origin https://github.com/example/homebrew-demo
+git add -A && mise install && mise run check
+```
