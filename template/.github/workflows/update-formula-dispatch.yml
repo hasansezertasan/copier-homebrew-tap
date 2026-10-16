@@ -142,7 +142,7 @@ jobs:
         if: steps.check.outputs.has_update == 'true'
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1  # v8.1.1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.WORKFLOW_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore(${{ env.FORMULA }}): update to ${{ steps.check.outputs.version }}"
           title: "chore(${{ env.FORMULA }}): update to ${{ steps.check.outputs.version }}"
           body: |
@@ -152,10 +152,10 @@ jobs:
             - **Version**: ${{ steps.check.outputs.version }}
 
             Audited, built from source, and tested in the workflow run that
-            opened this PR. Bottles are **not** built here: a PR opened with
-            `GITHUB_TOKEN` does not trigger `tests.yml`. Close and reopen this PR
-            (or push to its branch) to run the bottle build before applying the
-            `pr-pull` label.
+            opened this PR. Bottles are built by `tests.yml`, which a PR opened
+            with `GITHUB_TOKEN` does not trigger. Without a `WORKFLOW_TOKEN`
+            secret, close and reopen this PR (or push to its branch) to run the
+            bottle build before applying the `pr-pull` label.
 
             ---
             *Triggered by repository_dispatch from package repo.*

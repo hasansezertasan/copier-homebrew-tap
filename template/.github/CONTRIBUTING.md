@@ -12,3 +12,11 @@ Before opening a pull request:
 5. Run `mise install` and `mise run check`.
 
 Include the commands and results in the pull request's verification section.
+
+## Automated pull requests
+
+The update and boilerplate-drift workflows open pull requests with the repository
+secret `WORKFLOW_TOKEN` if present, falling back to `GITHUB_TOKEN`. GitHub does
+not start workflows for actions performed by `GITHUB_TOKEN`, so maintainers close
+and reopen such a pull request (or push to its branch) to run `tests.yml` and the
+other checks, or configure `WORKFLOW_TOKEN` to start them automatically.
