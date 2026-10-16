@@ -9,10 +9,22 @@ scaffolded by the `homebrew-add` skill in
 
 ## For agents
 
-Install the skills from
-[`homebrew-tap-skills`](https://github.com/hasansezertasan/homebrew-tap-skills),
-then ask your agent to set up a new tap from this template. Have it ask before it
-creates a repository, changes settings or secrets, or pushes.
+Your agent is the interface. Copy this prompt into your coding agent:
+
+```text
+Install the homebrew-tap-skills skills: pick the best installation method for
+you from https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
+
+Then use its homebrew-tap-setup skill to set up a new Homebrew tap from
+https://github.com/hasansezertasan/copier-homebrew-tap, in a directory named
+homebrew-tap. Ask me for what you need (my GitHub owner, the tap's purpose and
+the first package), and ask before you create a repository, change settings or
+secrets, or push.
+```
+
+The prompt points the agent at the
+[installation page](https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md),
+which lists the install routes and tells the agent how to choose and confirm one.
 
 ## For humans
 
@@ -26,7 +38,8 @@ mise install
 ```
 
 The generated `README.md` lists the remaining setup (Actions permissions, the
-first formula or cask).
+first formula or cask). Add formulae and casks with the `homebrew-add` skill
+from `homebrew-tap-skills`.
 
 ### Naming
 
@@ -52,7 +65,7 @@ uvx copier update
 | `template/` | files rendered into a tap; `*.jinja` files are templated, the rest are copied verbatim |
 | `.github/workflows/template.yml` | renders the template and runs the tap's `mise run check` |
 | `.github/workflows/release.yml` | versions the template with release-please |
-| `docs/` | research notes and MADR decision records behind the template's design; file paths in them are relative to a generated tap, so they live under `template/` here |
+| `docs/` | research notes and MADR decision records behind the template's design; paths inside them are relative to a generated tap, not to this repository |
 
 `template/.gitignore.jinja` is the Cobo-managed `.gitignore` stored under a
 `.jinja` name so it does not ignore files inside `template/`. It contains no
