@@ -8,7 +8,8 @@ name: Boilerplate Drift
 # opened with the GITHUB_TOKEN fallback does not start every check: its
 # pull_request checks wait for approval and the pull_request_target gates
 # (check-branch-name.yml, check-pr-title.yml) do not run at all; close and
-# reopen the pull request to run every check.
+# reopen the pull request to run every applicable check (path-filtered
+# workflows such as tests.yml only run when their own paths changed).
 on:
   workflow_dispatch:
   schedule:
