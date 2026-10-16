@@ -13,6 +13,9 @@ on:
       - "Formula/**"
       - "Casks/**"
       - ".github/workflows/tests.yml"
+  # Manual fallback for pull requests opened with GITHUB_TOKEN, whose checks
+  # GitHub suppresses: run this workflow on the update branch before merging.
+  workflow_dispatch:
 # Deny-by-default; each job opts back into exactly what it needs.
 permissions: {}
 concurrency:
@@ -140,8 +143,9 @@ jobs:
     name: cask-audit
     needs: syntax
     if: |
-      github.event_name == 'pull_request'
-      && github.event.pull_request.draft == false
+      github.event_name == 'workflow_dispatch'
+      || (github.event_name == 'pull_request'
+        && github.event.pull_request.draft == false)
     timeout-minutes: 15
     # macOS is REQUIRED: brew audit skips the cask auditor on Linux
     # (`next [] if os == :linux` in dev-cmd/audit.rb), so the syntax job above
