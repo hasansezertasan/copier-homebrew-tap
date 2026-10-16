@@ -18,6 +18,8 @@ Include the commands and results in the pull request's verification section.
 
 The update and boilerplate-drift workflows open pull requests with the repository
 secret `WORKFLOW_TOKEN` if present, falling back to `GITHUB_TOKEN`. GitHub does
-not start workflows for actions performed by `GITHUB_TOKEN`, so maintainers close
-and reopen such a pull request (or push to its branch) to run `tests.yml` and the
-other checks, or configure `WORKFLOW_TOKEN` to start them automatically.
+not start workflows for actions performed by `GITHUB_TOKEN`, so maintainers run
+the `brew test-bot` workflow manually via `workflow_dispatch` on the update branch
+before merging (tap-syntax and cask audit; the bottle build runs once pull
+request checks start), or close and reopen such a pull request (or push to its
+branch), or configure `WORKFLOW_TOKEN` to start everything automatically.

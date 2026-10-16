@@ -38,6 +38,30 @@ class EscapeCellTest(unittest.TestCase):
         self.assertEqual(gen.escape_cell("first\nsecond   third"), "first second third")
 
 
+class SourceTest(unittest.TestCase):
+    def test_formula_is_pypi(self) -> None:
+        self.assertEqual(gen.source(True, False), "PyPI")
+
+    def test_cask_is_github_releases(self) -> None:
+        self.assertEqual(gen.source(False, True), "GitHub Releases")
+
+    def test_both_lists_both_sources(self) -> None:
+        self.assertEqual(gen.source(True, True), "PyPI + GitHub Releases")
+
+
+class LinksTest(unittest.TestCase):
+    def test_formula_gets_pypi_link(self) -> None:
+        out = gen.links(True, "widget", "https://example.com")
+        self.assertEqual(out, " ([PyPI](https://pypi.org/project/widget/))")
+
+    def test_cask_gets_no_link(self) -> None:
+        self.assertEqual(gen.links(False, "widget", "https://example.com"), "")
+
+    def test_pypi_homepage_gets_no_link(self) -> None:
+        out = gen.links(True, "widget", "https://pypi.org/project/widget/")
+        self.assertEqual(out, "")
+
+
 class SpliceTest(unittest.TestCase):
     def test_replaces_only_marked_region(self) -> None:
         readme = f"intro\n{gen.BEGIN}\nold\n{gen.END}\noutro\n"
@@ -57,21 +81,29 @@ class TableTest(unittest.TestCase):
             table = gen.build_table()
         self.assertEqual(table.count("[`example`]"), 1)
         self.assertIn("Formula + Cask", table)
+        self.assertIn("PyPI + GitHub Releases", table)
+
+    def test_formula_row_links_pypi(self) -> None:
+        formula = {"widget": {"desc": "Does a thing", "homepage": "https://example.com"}}
+        with patch.object(gen, "collect", side_effect=[formula, {}]):
+            table = gen.build_table()
+        self.assertIn("[PyPI](https://pypi.org/project/widget/)", table)
+        self.assertIn("| PyPI |", table)
 
 
 class EmptyTapTest(unittest.TestCase):
     def test_empty_tap_still_has_table_headers(self) -> None:
         table = gen.build_table()
-        self.assertIn("| Package | What it does | Type | Needs Python? |", table)
+        self.assertIn("| Package | What it does | Type | Needs Python? | Source |", table)
 
 
 class ReadmeFreshnessTest(unittest.TestCase):
     def test_readme_table_is_current(self) -> None:
-        current = gen.README.read_text()
+        current = gen.README.read_text(encoding="utf-8")
         updated = gen.splice(current, gen.build_table())
         self.assertEqual(current, updated,
                          "README.md packages table is stale; run "
-                         "`python scripts/gen_readme_packages.py`")
+                         "`mise run generate-readme`")
 
 
 if __name__ == "__main__":
