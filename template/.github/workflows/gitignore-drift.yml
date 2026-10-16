@@ -1,10 +1,10 @@
 ---
 name: Boilerplate Drift
-# Runs `cobo check` to detect when the Cobo-managed `.gitignore` has drifted
-# from the upstream github/gitignore templates recorded in cobo.lock.
-# `cobo update` hits the network and is inherently flaky, so this runs weekly
-# and on demand — never on pull_request. A failure is a maintenance signal
-# (regenerate with `cobo update && cobo sync`), not a merge blocker.
+# Re-renders the Cobo-managed `.gitignore` from the upstream github/gitignore
+# templates recorded in cobo.lock and opens a pull request when they drifted.
+# Fetching the upstream templates hits the network and is inherently flaky, so
+# this runs weekly and on demand — never on pull_request. A failed run is a
+# maintenance signal, not a merge blocker; the next run retries.
 on:
   workflow_dispatch:
   schedule:
@@ -12,27 +12,26 @@ on:
     - cron: "0 7 * * 1"
 permissions: {}
 jobs:
-  drift:
-    name: Check boilerplate drift
+  sync:
+    name: Open PR for boilerplate drift
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # The only job here that writes: it pushes the update branch and opens the PR.
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
-      # The Cobo version is pinned once, in .config/mise.toml.
-      - name: Install mise
-        uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8  # v5.1.2
+      # The action runs the Cobo release that ships at its own ref, so Renovate
+      # bumps it as an ordinary action digest.
+      - name: Sync Cobo fragments and open a PR
+        uses: hasansezertasan/cobo@1acfd57dbd67a6de4508a0924504cb5d5d5c15e0  # v0.6.0
         with:
-          install: false
-          cache: false
-      - name: Install Cobo
-        run: |
-          mise trust .config/mise.toml
-          mise install pipx:cobo uv
-      - name: Refresh Cobo sources
-        run: mise exec -- cobo update
-      - name: Check for drift
-        run: mise exec -- cobo check
+          pr-title: "chore: sync Cobo-managed boilerplate"
+          # The action's default, cobo/update-fragments, fails check-branch-name.yml.
+          branch: chore/sync-cobo-boilerplate
+          # Fail the run when a fragment cannot be re-rendered. Otherwise an
+          # unreachable or moved template leaves no diff, no PR, and a green run.
+          fail-on-sync-error: "true"

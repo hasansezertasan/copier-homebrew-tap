@@ -26,8 +26,8 @@ matches one.
 - Run `mise run generate-readme` after any formula or cask change; CI fails a
   stale catalog table.
 - Keep workflows least-privileged: every workflow starts with `permissions: {}`
-  and each job opts in. Write access is limited to the update and publish
-  jobs that push or open pull requests, the `zizmor` SARIF upload
+  and each job opts in. Write access is limited to the update, publish, and
+  Cobo-sync jobs that push or open pull requests, the `zizmor` SARIF upload
   (`security-events`), and the two lint workflows' sticky PR comments
   (`pull_request_target`, which never checks out PR code). Do not rely on the
   repository's default workflow permissions.
