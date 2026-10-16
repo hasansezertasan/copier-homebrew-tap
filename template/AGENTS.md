@@ -5,9 +5,11 @@ This repository is a Homebrew tap generated from
 Keep scripts and workflows owner-agnostic: the workflows resolve `owner/tap`
 from the Actions context, so nothing hardcodes an owner or repository name.
 
-Skills for operating the tap (adding formulae and casks, and which generated
+Skills for operating the tap (adding, fixing, triaging, removing, and verifying
+formulae and casks, and which generated
 fields need a human check) come from
-[`homebrew-tap-skills`](https://github.com/hasansezertasan/homebrew-tap-skills).
+[`homebrew-tap-skills`](https://github.com/hasansezertasan/homebrew-tap-skills),
+a skills repository that also installs as a Claude Code or Codex plugin.
 Install it, or read its `skills/<name>/SKILL.md` files directly when a task
 matches one.
 

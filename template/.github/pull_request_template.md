@@ -8,3 +8,5 @@
 - [ ] Installed and tested locally
 - [ ] `mise install` and `mise run check`
 - [ ] `mise run lint`
+- [ ] `python3 -m unittest discover -s tests -v`
+- [ ] `python3 scripts/gen_readme_packages.py --check`
