@@ -24,8 +24,10 @@ secrets, or push.
 
 The prompt points the agent at the
 [installation page](https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md),
-which lists the install routes and tells the agent how to choose and confirm one.
-None of those routes has a recorded successful installation yet.
+which lists the install routes (Claude Code or Codex plugin, a skills installer,
+or a manual clone) and tells the agent how to choose and confirm one. The
+Claude Code and Codex plugin routes each have one recorded installation on
+macOS; the skills installer route has none.
 
 ## For humans
 
@@ -40,7 +42,8 @@ mise install
 
 The generated `README.md` lists the remaining setup (Actions permissions, the
 first formula or cask). Add formulae and casks with the `homebrew-add` skill
-from `homebrew-tap-skills`.
+from `homebrew-tap-skills`, which you can also run directly (see the generated
+README).
 
 ### Naming
 
