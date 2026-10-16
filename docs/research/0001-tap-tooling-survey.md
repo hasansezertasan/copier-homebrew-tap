@@ -111,3 +111,11 @@ Ship, in addition to the scaffolding inherited from the source tap:
 
 Do not ship the source tap's `CLAUDE.md`, the Python template's release,
 typing, docs, or packaging tooling, or its plugin marketplace manifest.
+
+## Update
+
+The `homebrew-add` skill and the scaffolders now live in
+[`homebrew-tap-skills`](https://github.com/hasansezertasan/homebrew-tap-skills),
+and `skills-lock.json` is gone; see
+[ADR-0005](../adr/0005-keep-agent-skills-in-a-separate-repository.md). The
+findings above describe the state when this survey was written.
