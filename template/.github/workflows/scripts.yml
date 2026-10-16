@@ -17,6 +17,7 @@ on:
       - "README.md"
       - ".gitignore"
       - "cobo.lock"
+      - ".config/mise.toml"
       - ".github/workflows/scripts.yml"
   pull_request:
     paths:
@@ -27,6 +28,7 @@ on:
       - "README.md"
       - ".gitignore"
       - "cobo.lock"
+      - ".config/mise.toml"
       - ".github/workflows/scripts.yml"
 # Deny-by-default; each job opts back into exactly what it needs.
 permissions: {}
