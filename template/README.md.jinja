@@ -78,10 +78,10 @@ Two weekly workflows use `brew livecheck` to find and propose formula and cask
 updates. A formula bump is audited, built from source, and tested inside the run
 that opens the pull request, because a pull request opened with `GITHUB_TOKEN`
 does not trigger `tests.yml` — so `brew audit` alone would let a dependency that
-fails to build reach a PR looking verified. Bottles still come from `tests.yml`:
-close and reopen an automated PR (or push to its branch) to build them before
-applying the `pr-pull` label. Two `repository_dispatch` workflows let a package repository request an
-update immediately after publishing:
+fails to build reach a PR looking verified. Bottles still come from `tests.yml`
+(see [Automated pull requests](#automated-pull-requests)). Two
+`repository_dispatch` workflows let a package repository request an update
+immediately after publishing:
 
 - `update-formula` payload: `{"formula":"name","version":"1.2.3"}`
 - `update-cask` payload: `{"cask":"name","version":"1.2.3"}`
@@ -98,9 +98,19 @@ and uploads bottles, apply the `pr-pull` label to invoke `publish.yml`.
 uploads findings to the Security tab. The dispatch receivers act on
 attacker-controllable payloads with a write token, so keep it green.
 `gitignore-drift.yml` re-renders the Cobo-managed `.gitignore` weekly and opens
-a pull request when upstream boilerplate drifted. Like the update pull requests,
-it is opened with `GITHUB_TOKEN`, so its checks do not start by themselves:
-close and reopen it to run them.
+a pull request when upstream boilerplate drifted. It opens its pull request the same way
+the update workflows do.
+
+### Automated pull requests
+
+The update and drift workflows open their pull requests with the repository
+secret `WORKFLOW_TOKEN` if defined, falling back to `GITHUB_TOKEN`. Because
+GitHub does not start workflows for actions performed by `GITHUB_TOKEN`, a pull
+request opened with it does not run `tests.yml` (the bottle build) or the other
+checks. Either close and reopen the pull request, or push to its branch, to start
+them, or configure a fine-grained personal access token or GitHub App token for
+this repository as `WORKFLOW_TOKEN` (**Contents: write** and **Pull requests:
+write**) so the checks start automatically. The secret is optional.
 
 ## Pull request conventions
 

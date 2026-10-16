@@ -29,16 +29,17 @@ None of these needs a counterpart.
 - Its `AGENTS.md` has a Layout section and explains each write scope.
 - Its Cobo drift workflow opens a pull request instead of only reporting.
 
-### Two options were weighed and not taken
+### Two options were weighed
 
-- An update script. The four update workflows are not duplicated: the formula
+- An update script, not taken. The four update workflows are not duplicated: the formula
   and dispatch workflows differ in 287 lines, the cask pair in 248, and almost
   every line is a `brew`, `jq`, or `gh` call. See
   [ADR-0008](../adr/0008-keep-the-update-workflows-as-inline-shell.md).
-- A `WORKFLOW_TOKEN` secret so update pull requests start CI. It adds a
-  long-lived credential and widens the blast radius of an attacker-influenced
-  dispatch payload, to save closing and reopening a pull request. Deferred, not
-  rejected.
+- Nothing else was rejected outright. A `WORKFLOW_TOKEN` secret, so update pull
+  requests start CI, was first deferred because it adds a long-lived credential
+  and widens the blast radius of an attacker-influenced dispatch payload, then
+  adopted as an optional fallback; see
+  [ADR-0009](../adr/0009-optional-workflow-token-for-automated-pull-requests.md).
 
 ## Result
 
