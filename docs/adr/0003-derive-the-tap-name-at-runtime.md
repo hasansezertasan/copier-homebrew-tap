@@ -1,3 +1,6 @@
+Status: superseded by [ADR-0006](0006-render-identity-with-copier-and-resolve-the-tap-name-at-runtime.md)
+
+
 # Derive the Tap Name at Runtime
 
 ## Context and Problem Statement
