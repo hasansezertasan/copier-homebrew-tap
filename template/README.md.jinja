@@ -97,8 +97,10 @@ and uploads bottles, apply the `pr-pull` label to invoke `publish.yml`.
 `zizmor.yml` audits the tap's own workflows on every push and pull request and
 uploads findings to the Security tab. The dispatch receivers act on
 attacker-controllable payloads with a write token, so keep it green.
-`gitignore-drift.yml` runs `cobo check` weekly to catch upstream boilerplate
-drift; it is a maintenance signal, not a merge blocker.
+`gitignore-drift.yml` re-renders the Cobo-managed `.gitignore` weekly and opens
+a pull request when upstream boilerplate drifted. Like the update pull requests,
+it is opened with `GITHUB_TOKEN`, so its checks do not start by themselves:
+close and reopen it to run them.
 
 ## Pull request conventions
 

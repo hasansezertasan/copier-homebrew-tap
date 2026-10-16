@@ -25,6 +25,7 @@ secrets, or push.
 The prompt points the agent at the
 [installation page](https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md),
 which lists the install routes and tells the agent how to choose and confirm one.
+None of those routes has a recorded successful installation yet.
 
 ## For humans
 
