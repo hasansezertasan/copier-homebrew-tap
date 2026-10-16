@@ -1,3 +1,4 @@
+---
 name: Broken formula or cask
 description: Report a formula or cask that fails to install, build, or run.
 labels: [bug]

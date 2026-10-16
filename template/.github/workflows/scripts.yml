@@ -17,6 +17,7 @@ on:
       - "README.md"
       - ".gitignore"
       - "cobo.lock"
+      - ".config/mise.toml"
       - ".github/workflows/scripts.yml"
   pull_request:
     paths:
@@ -27,6 +28,7 @@ on:
       - "README.md"
       - ".gitignore"
       - "cobo.lock"
+      - ".config/mise.toml"
       - ".github/workflows/scripts.yml"
 # Deny-by-default; each job opts back into exactly what it needs.
 permissions: {}
@@ -52,7 +54,14 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Check README packages table is up to date
         run: python scripts/gen_readme_packages.py --check
+      # The Cobo version is pinned once, in .config/mise.toml.
+      - name: Install mise
+        uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8  # v5.1.2
+        with:
+          install: false
+          cache: false
       - name: Check Cobo-managed boilerplate
         run: |
-          python -m pip install cobo==0.5.0
-          cobo check
+          mise trust .config/mise.toml
+          mise install pipx:cobo uv
+          mise exec -- cobo check --strict
