@@ -22,9 +22,17 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           persist-credentials: false
-      - name: Set up uv
-        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884  # v10.3.0
+      # The Cobo version is pinned once, in .config/mise.toml.
+      - name: Install mise
+        uses: jdx/mise-action@08ae2a091c038e1e05ec6f5115dc5c69d5a2a6b8  # v5.1.2
+        with:
+          install: false
+          cache: false
+      - name: Install Cobo
+        run: |
+          mise trust .config/mise.toml
+          mise install pipx:cobo uv
       - name: Refresh Cobo sources
-        run: uvx cobo update
+        run: mise exec -- cobo update
       - name: Check for drift
-        run: uvx cobo check
+        run: mise exec -- cobo check

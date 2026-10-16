@@ -4,6 +4,9 @@
   "config": {
     "default": true,
     "MD013": false,
+    // MD041 (first line is an h1) is disabled: the pull request template
+    // starts at an h2, because GitHub shows the PR title above it.
+    "MD041": false,
   },
   "globs": ["**/*.md", "**/*.markdown"],
   "gitignore": true,
