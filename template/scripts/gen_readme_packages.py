@@ -37,13 +37,13 @@ def field(text: str, key: str) -> str:
 
 
 def escape_cell(value: str) -> str:
-    """Escape characters that would corrupt a Markdown table cell.
+    """Make a string safe for a Markdown table cell.
 
-    A literal ``|`` in a description (e.g. a PyPI summary) would otherwise be
-    read as a column delimiter, shifting every following cell and silently
-    breaking the row.
+    Descriptions come from lightly-normalized upstream summaries, so a raw
+    ``|`` would open a spurious column and an embedded newline would split the
+    row. Collapse whitespace (incl. newlines) and escape pipes.
     """
-    return value.replace("|", "\\|")
+    return " ".join(value.split()).replace("|", "\\|")
 
 
 def collect(dir_name: str) -> dict[str, dict[str, str]]:

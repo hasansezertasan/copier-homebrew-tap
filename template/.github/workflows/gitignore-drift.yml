@@ -4,7 +4,12 @@ name: Boilerplate Drift
 # templates recorded in cobo.lock and opens a pull request when they drifted.
 # Fetching the upstream templates hits the network and is inherently flaky, so
 # this runs weekly and on demand — never on pull_request. A failed run is a
-# maintenance signal, not a merge blocker; the next run retries.
+# maintenance signal, not a merge blocker; the next run retries. A pull request
+# opened with the GITHUB_TOKEN fallback does not start every check: its
+# pull_request checks wait for approval and the pull_request_target gates
+# (check-branch-name.yml, check-pr-title.yml) do not run at all; close and
+# reopen the pull request to run every applicable check (path-filtered
+# workflows such as tests.yml only run when their own paths changed).
 on:
   workflow_dispatch:
   schedule:

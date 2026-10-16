@@ -34,6 +34,9 @@ class EscapeCellTest(unittest.TestCase):
     def test_leaves_plain_text_untouched(self) -> None:
         self.assertEqual(gen.escape_cell("plain description"), "plain description")
 
+    def test_collapses_newlines_and_whitespace(self) -> None:
+        self.assertEqual(gen.escape_cell("first\nsecond   third"), "first second third")
+
 
 class SpliceTest(unittest.TestCase):
     def test_replaces_only_marked_region(self) -> None:
