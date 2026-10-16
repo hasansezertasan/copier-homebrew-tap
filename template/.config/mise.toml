@@ -2,22 +2,38 @@
 action-validator = "latest"
 actionlint = "latest"
 shellcheck = "latest"
+uv = "latest"
 yamlfmt = "latest"
 yamllint = "latest"
 zizmor = "latest"
 
-[tasks."add-formula"]
-description = "Scaffold a fully-resourced formula from a PyPI package"
-run = "python3 scripts/add_formula.py"
-
-[tasks."add-cask"]
-description = "Scaffold a cask from a GitHub release (prebuilt macOS app)"
-run = "python3 scripts/add_cask.py"
-
 [tasks."check-boilerplate"]
 description = "Verify Cobo-managed files match cobo.lock"
 # Pinned to match scripts.yml, so a local check and CI agree on the renderer.
-run = "uvx cobo==0.5.0 check"
+# --strict also compares the whole file, so the rendered .gitignore must be
+# byte-identical to the template's .gitignore.jinja.
+run = "uvx cobo==0.5.0 check --strict"
+
+[tasks."check-readme"]
+description = "Verify the generated package catalog is current"
+run = "python3 scripts/gen_readme_packages.py --check"
+
+[tasks."generate-readme"]
+description = "Regenerate the package catalog"
+run = "python3 scripts/gen_readme_packages.py"
+
+[tasks."test"]
+description = "Run the unit test suite"
+run = "python3 -m unittest discover -s tests -v"
+
+[tasks."check"]
+description = "Run all local verification"
+run = [
+  { task = "test" },
+  { task = "check-readme" },
+  { task = "style:check" },
+  { task = "check-boilerplate" },
+]
 
 [tasks."hooks"]
 description = "Install the prek git hooks"

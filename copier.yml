@@ -1,0 +1,38 @@
+_subdirectory: template
+_templates_suffix: .jinja
+_min_copier_version: "9.4.0"
+_answers_file: .copier-answers.yml
+_message_after_copy: |
+  Tap "{{ tap_owner }}/{{ tap_name }}" generated in {{ _copier_conf.dst_path }}.
+  Next: `git init`, add an `origin` remote named `{{ tap_repository }}`, then
+  `mise install` and add the first formula or cask with the `homebrew-add`
+  skill from hasansezertasan/homebrew-tap-skills. See README.md for the
+  Actions settings.
+
+tap_name:
+  type: str
+  help: Tap name, as used in `brew tap <owner>/<name>` (without the `homebrew-` prefix)
+  default: "{{ _copier_conf.dst_path.name | regex_replace('^homebrew-', '') }}"
+
+tap_description:
+  type: str
+  help: One-sentence description for the README
+  default: A Homebrew tap for Python command-line tools and macOS applications.
+
+tap_owner:
+  type: str
+  help: GitHub owner of the tap repository (README install snippet only)
+
+tap_repository:
+  type: str
+  help: GitHub repository name; Homebrew requires `homebrew-<tap name>` (README only)
+  default: "homebrew-{{ tap_name }}"
+
+copyright_holder:
+  type: str
+  help: Name for the LICENSE copyright line
+
+copyright_year:
+  type: str
+  help: Year for the LICENSE copyright line
+  default: "2026"

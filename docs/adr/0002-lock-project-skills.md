@@ -1,3 +1,5 @@
+Status: superseded by [ADR-0005](0005-keep-agent-skills-in-a-separate-repository.md)
+
 # Lock Project Skills without Vendoring Them
 
 ## Context and Problem Statement
