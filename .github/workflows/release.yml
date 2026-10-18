@@ -3,7 +3,7 @@ name: Release
 # Versions the template itself. release-please opens and maintains a release PR
 # from the Conventional Commits that land on `main`; on merge it tags the commit
 # (v0.1.0, ...) and cuts a GitHub Release. Those tags are what a generated
-# bucket's `copier update` walks to. There are no build or publish jobs because
+# template repo's `copier update` walks to. There are no build or publish jobs because
 # the template is not a distributable package. Never remove `workflow_dispatch`:
 # it is the manual way to re-run the release after a failure.
 on:
