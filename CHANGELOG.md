@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.1...v0.1.2) (2026-10-19)
+
+
+### 🐛 Bug Fixes
+
+* correct GITHUB_TOKEN PR run docs, unit job permissions and check task description ([#43](https://github.com/hasansezertasan/copier-homebrew-tap/issues/43)) ([979312c](https://github.com/hasansezertasan/copier-homebrew-tap/commit/979312c0e296aea980b500638d2b453617c623f5))
+
 ## [0.1.1](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.0...v0.1.1) (2026-10-19)
 
 
