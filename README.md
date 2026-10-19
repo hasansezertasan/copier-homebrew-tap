@@ -12,14 +12,15 @@ scaffolded by the `homebrew-add` skill in
 Your agent is the interface. Copy this prompt into your coding agent:
 
 ```text
-Install the homebrew-tap-skills skills: pick the best installation method for
-you from https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
+Install the homebrew-tap-skills skills in project scope: pick the best
+installation method for you from https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
 
-Then use its homebrew-tap-setup skill to set up a new Homebrew tap from
-https://github.com/hasansezertasan/copier-homebrew-tap, in a directory named
-homebrew-tap. Ask me for what you need (my GitHub owner, the tap's purpose and
-the first package), and ask before you create a repository, change settings or
-secrets, or push.
+Then use its homebrew-tap-setup skill to set up a Homebrew tap from
+https://github.com/hasansezertasan/copier-homebrew-tap. Inspect the current
+directory first, then ask me whether to adopt it or create a new directory named
+homebrew-tap. Ask me for what you can't read from the repository (my GitHub
+owner, and for a new tap its purpose and the first package), and ask before you
+create a repository, change settings or secrets, or push.
 ```
 
 The prompt points the agent at the
@@ -44,6 +45,24 @@ The generated `README.md` lists the remaining setup (Actions permissions, the
 first formula or cask). Add formulae and casks with the `homebrew-add` skill
 from `homebrew-tap-skills`, which you can also run directly (see the generated
 README).
+
+### Adopt an existing tap
+
+To bring a tap that was not rendered from this template under it, render over
+the existing checkout from a clean working tree, then review the diff and revert
+what you want to keep:
+
+```sh
+uvx copier copy gh:hasansezertasan/copier-homebrew-tap . --overwrite
+git diff
+```
+
+`--overwrite` replaces files without asking. The template renders `README.md`,
+`AGENTS.md`, `LICENSE`, the workflows, `scripts/` and `tests/`, so expect to
+revert or merge your own versions of them, and keep your existing formulae and
+casks. Regenerate the README catalog with `python3 scripts/gen_readme_packages.py`,
+and commit `.copier-answers.yml` so `copier update` can merge later template
+changes.
 
 ### Naming
 
