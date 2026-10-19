@@ -12,22 +12,23 @@ scaffolded by the `homebrew-add` skill in
 Your agent is the interface. Copy this prompt into your coding agent:
 
 ```text
-Install the homebrew-tap-skills skills: pick the best installation method for
-you from https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
+Inspect the current directory first, then ask me whether to adopt it or create a
+new directory named homebrew-tap. Inside that directory, install the homebrew-tap-skills
+skills in project scope: pick the best installation method for you from
+https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
 
-Then use its homebrew-tap-setup skill to set up a new Homebrew tap from
-https://github.com/hasansezertasan/copier-homebrew-tap, in a directory named
-homebrew-tap. Ask me for what you need (my GitHub owner, the tap's purpose and
-the first package), and ask before you create a repository, change settings or
+Then use its homebrew-tap-setup skill to set up a Homebrew tap from
+https://github.com/hasansezertasan/copier-homebrew-tap. Ask me for what you can't read
+from the repository (my GitHub owner, and for a new tap its purpose and the
+first package), and ask before you create a repository, change settings or
 secrets, or push.
 ```
 
 The prompt points the agent at the
 [installation page](https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md),
-which lists the install routes (Claude Code or Codex plugin, a skills installer,
-or a manual clone) and tells the agent how to choose and confirm one. The
-Claude Code and Codex plugin routes each have one recorded installation on
-macOS; the skills installer route has none.
+which lists the install routes for each runtime and tells the agent how to
+choose and confirm one. The Claude Code and Codex plugin routes each have one
+recorded installation on macOS.
 
 ## For humans
 
@@ -44,6 +45,34 @@ The generated `README.md` lists the remaining setup (Actions permissions, the
 first formula or cask). Add formulae and casks with the `homebrew-add` skill
 from `homebrew-tap-skills`, which you can also run directly (see the generated
 README).
+
+### Adopt an existing tap
+
+To bring a tap that was not rendered from this template under it, render over
+the existing checkout from a clean working tree, then review the diff and revert
+what you want to keep. Most of what the template adds is new, untracked files,
+so mark them with intent-to-add before diffing:
+
+```sh
+uvx copier copy gh:hasansezertasan/copier-homebrew-tap . --overwrite
+git add --intent-to-add --all   # so new files show up in the diff
+git diff
+git status --short              # lists every new file the template added
+```
+
+`--overwrite` replaces files without asking. The template renders `README.md`,
+`AGENTS.md`, `LICENSE`, the workflows, `scripts/` and `tests/`, so expect to
+revert or merge your own versions of them, and keep your existing formulae and
+casks. The rendered workflows filter pushes and pull requests to `main`, and
+`publish.yml` pushes bottle commits to `main`: if the tap's default branch is
+`master` or another name, rename it to `main`, or change the filters in
+`tests.yml`, `scripts.yml` and `zizmor.yml` and the `branch: main` in
+`publish.yml`, or the checks stop running and publishing targets the wrong
+branch. The README catalog is spliced between `BEGIN/END PACKAGES TABLE` markers:
+if you keep your own README, copy the marker block from the rendered one first,
+or `python3 scripts/gen_readme_packages.py` exits with an error; then run it to
+regenerate the catalog. Commit `.copier-answers.yml` so `copier update` can merge
+later template changes.
 
 ### Naming
 
