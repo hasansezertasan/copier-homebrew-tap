@@ -174,7 +174,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          RESOLVED_VERSION: ${{ steps.check.outputs.version }}
         run: |
+          # Prefer the version the check step resolved (livecheck) when the
+          # payload carried none.
+          VERSION="${VERSION:-$RESOLVED_VERSION}"
           body=$(printf '%s\n' \
             "Automated formula bump triggered by a release dispatch failed." \
             "" \
