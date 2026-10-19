@@ -50,19 +50,24 @@ README).
 
 To bring a tap that was not rendered from this template under it, render over
 the existing checkout from a clean working tree, then review the diff and revert
-what you want to keep:
+what you want to keep. Most of what the template adds is new, untracked files,
+so mark them with intent-to-add before diffing:
 
 ```sh
 uvx copier copy gh:hasansezertasan/copier-homebrew-tap . --overwrite
+git add --intent-to-add --all   # so new files show up in the diff
 git diff
+git status --short              # lists every new file the template added
 ```
 
 `--overwrite` replaces files without asking. The template renders `README.md`,
 `AGENTS.md`, `LICENSE`, the workflows, `scripts/` and `tests/`, so expect to
 revert or merge your own versions of them, and keep your existing formulae and
-casks. Regenerate the README catalog with `python3 scripts/gen_readme_packages.py`,
-and commit `.copier-answers.yml` so `copier update` can merge later template
-changes.
+casks. The README catalog is spliced between `BEGIN/END PACKAGES TABLE` markers:
+if you keep your own README, copy the marker block from the rendered one first,
+or `python3 scripts/gen_readme_packages.py` exits with an error; then run it to
+regenerate the catalog. Commit `.copier-answers.yml` so `copier update` can merge
+later template changes.
 
 ### Naming
 
