@@ -26,10 +26,9 @@ secrets, or push.
 
 The prompt points the agent at the
 [installation page](https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md),
-which lists the install routes (Claude Code or Codex plugin, a skills installer,
-or a manual clone) and tells the agent how to choose and confirm one. The
-Claude Code and Codex plugin routes each have one recorded installation on
-macOS; the skills installer route has none.
+which lists the install routes for each runtime and tells the agent how to
+choose and confirm one. The Claude Code and Codex plugin routes each have one
+recorded installation on macOS.
 
 ## For humans
 
@@ -64,7 +63,10 @@ git status --short              # lists every new file the template added
 `--overwrite` replaces files without asking. The template renders `README.md`,
 `AGENTS.md`, `LICENSE`, the workflows, `scripts/` and `tests/`, so expect to
 revert or merge your own versions of them, and keep your existing formulae and
-casks. The README catalog is spliced between `BEGIN/END PACKAGES TABLE` markers:
+casks. The rendered workflows filter pushes and pull requests to `main`: if the
+tap's default branch is `master` or another name, rename it to `main` or change
+the branch filters in the workflows, or the checks stop running on normal
+changes. The README catalog is spliced between `BEGIN/END PACKAGES TABLE` markers:
 if you keep your own README, copy the marker block from the rendered one first,
 or `python3 scripts/gen_readme_packages.py` exits with an error; then run it to
 regenerate the catalog. Commit `.copier-answers.yml` so `copier update` can merge
