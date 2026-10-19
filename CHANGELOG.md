@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.0...v0.1.1) (2026-10-19)
+
+
+### 📝 Documentation
+
+* document adopting the template in an existing tap ([#40](https://github.com/hasansezertasan/copier-homebrew-tap/issues/40)) ([fdd19e9](https://github.com/hasansezertasan/copier-homebrew-tap/commit/fdd19e9367a983db18ccf52b1b2946436f3aaa2e))
+
 ## 0.1.0 (2026-10-19)
 
 
