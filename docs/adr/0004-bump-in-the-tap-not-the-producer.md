@@ -34,6 +34,6 @@ that never arrives.
 * Bad, because the dispatch payload is attacker-controllable: every receiver
   must read `client_payload` through `env` and validate it against strict
   patterns before use. `.github/workflows/zizmor.yml` guards that discipline.
-* Bad, because a pull request opened with `GITHUB_TOKEN` does not trigger
-  `tests.yml`, so each receiver audits its own bump inline and reverts on
-  failure.
+* Bad, because a pull request opened with `GITHUB_TOKEN` only runs
+  `tests.yml` once a maintainer approves it, so each receiver audits its own
+  bump inline and reverts on failure.
