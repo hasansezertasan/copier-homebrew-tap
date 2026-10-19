@@ -1,5 +1,5 @@
 import yaml
-from conftest import copier, git
+from conftest import REPO, copier, git
 
 # The tap template has a required question without a default.
 ANSWERS = ["--data=tap_owner=example", "--data=copyright_holder=Example"]
@@ -28,3 +28,14 @@ def test_update_to_a_new_version_only_moves_the_answers_commit(tmp_path, version
     assert changed == {".copier-answers.yml"}
     answers = yaml.safe_load((dest / ".copier-answers.yml").read_text())
     assert answers["_commit"] == "v0.0.1"
+
+
+def test_formula_dispatch_reports_a_failed_bump_as_an_issue():
+    workflow = yaml.safe_load(
+        (REPO / "template/.github/workflows/update-formula-dispatch.yml").read_text()
+    )
+    job = workflow["jobs"]["update"]
+    assert job["permissions"].get("issues") == "write"
+    last = job["steps"][-1]
+    assert last["if"] == "failure()"
+    assert "gh issue create" in last["run"]
