@@ -12,15 +12,16 @@ scaffolded by the `homebrew-add` skill in
 Your agent is the interface. Copy this prompt into your coding agent:
 
 ```text
-Install the homebrew-tap-skills skills in project scope: pick the best
-installation method for you from https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
+Inspect the current directory first, then ask me whether to adopt it or create a
+new directory named homebrew-tap. Inside that directory, install the homebrew-tap-skills
+skills in project scope: pick the best installation method for you from
+https://github.com/hasansezertasan/homebrew-tap-skills/blob/main/docs/installation.md
 
 Then use its homebrew-tap-setup skill to set up a Homebrew tap from
-https://github.com/hasansezertasan/copier-homebrew-tap. Inspect the current
-directory first, then ask me whether to adopt it or create a new directory named
-homebrew-tap. Ask me for what you can't read from the repository (my GitHub
-owner, and for a new tap its purpose and the first package), and ask before you
-create a repository, change settings or secrets, or push.
+https://github.com/hasansezertasan/copier-homebrew-tap. Ask me for what you can't read
+from the repository (my GitHub owner, and for a new tap its purpose and the
+first package), and ask before you create a repository, change settings or
+secrets, or push.
 ```
 
 The prompt points the agent at the
