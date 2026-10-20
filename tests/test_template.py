@@ -12,6 +12,16 @@ def test_template_renders_with_defaults(tmp_path, versioned_template):
     assert (dest / ".copier-answers.yml").exists()
 
 
+def test_rendered_gitignore_keeps_the_carriage_return_patterns(tmp_path, versioned_template):
+    # Jinja and editors turn a bare carriage return into a newline, which splits
+    # `Icon\r` into two lines and drops the pattern.
+    dest = tmp_path / "project"
+    copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
+    lines = (dest / ".gitignore").read_bytes().split(b"\n")
+    assert b"Icon[\r]" in lines
+    assert b".HFS+ Private Directory Data[\r]" in lines
+
+
 def test_update_to_a_new_version_only_moves_the_answers_commit(tmp_path, versioned_template):
     dest = tmp_path / "project"
     copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
