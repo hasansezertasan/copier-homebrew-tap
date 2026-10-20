@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.2...v0.1.3) (2026-10-20)
+
+
+### 🐛 Bug Fixes
+
+* keep the carriage-return patterns in the rendered .gitignore ([#47](https://github.com/hasansezertasan/copier-homebrew-tap/issues/47)) ([4db5f26](https://github.com/hasansezertasan/copier-homebrew-tap/commit/4db5f2655424007a674ff277ed6d5c7e4945d853))
+* report failed dispatched formula bumps as an issue ([#45](https://github.com/hasansezertasan/copier-homebrew-tap/issues/45)) ([dc8f7fb](https://github.com/hasansezertasan/copier-homebrew-tap/commit/dc8f7fbde9e12b6ea9417621aadd09357b0f9101))
+
 ## [0.1.2](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.1...v0.1.2) (2026-10-19)
 
 
