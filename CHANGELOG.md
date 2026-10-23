@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.3...v0.1.4) (2026-10-23)
+
+
+### 🐛 Bug Fixes
+
+* state the Python 3.11 floor of the generated pyupgrade hook ([#54](https://github.com/hasansezertasan/copier-homebrew-tap/issues/54)) ([4842f90](https://github.com/hasansezertasan/copier-homebrew-tap/commit/4842f90ce0d8d511476f63da84017b26744a9bee))
+
 ## [0.1.3](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.2...v0.1.3) (2026-10-20)
 
 
