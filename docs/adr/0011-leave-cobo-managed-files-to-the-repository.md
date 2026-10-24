@@ -33,5 +33,14 @@ template changes.
   lines.
 * Bad, because changes to the template's `.gitignore` no longer reach existing taps; they
   arrive through cobo's own updates instead.
+* Bad, because the skip also applies to `copier copy --overwrite` over an existing tap: an
+  existing `.gitignore` is kept beside the freshly written `cobo.lock`, and the pair no longer
+  matches. Copier evaluates `_skip_if_exists` patterns without `_copier_operation`, so the skip
+  cannot be limited to updates. The adoption section of the README says to delete the
+  existing `.gitignore` and `cobo.lock` before rendering.
+* Bad, because `.gitignore` and `cobo.lock` are reseeded independently: if a repository
+  deletes only one of them and updates after the template's cobo inputs changed, the old
+  and new halves no longer match. `cobo check --strict` reports it, and re-running
+  `cobo gitignore dump … --lock` restores the pair.
 * If the generated `cobo.lock` ever tracks `.gitattributes` or `.editorconfig`, add them to
   `_skip_if_exists` in the same change.

@@ -60,7 +60,10 @@ git diff
 git status --short              # lists every new file the template added
 ```
 
-`--overwrite` replaces files without asking. The template renders `README.md`,
+`--overwrite` replaces files without asking, except `.gitignore` and `cobo.lock`, which the
+template seeds once and skips when they exist: delete your own `.gitignore` and any `cobo.lock` before
+rendering, or one is kept beside the other's fresh copy and `cobo check --strict` fails; then
+re-add your own ignores below the cobo block. The template renders `README.md`,
 `AGENTS.md`, `LICENSE`, the workflows, `scripts/` and `tests/`, so expect to
 revert or merge your own versions of them, and keep your existing formulae and
 casks. The rendered workflows filter pushes and pull requests to `main`, and
