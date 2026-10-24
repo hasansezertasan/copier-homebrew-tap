@@ -62,17 +62,17 @@ def test_formula_dispatch_reports_a_failed_bump_as_an_issue():
 # Rendered name -> the template file it comes from.
 COBO_MANAGED = {
     ".gitignore": ".gitignore.jinja",
-    ".gitattributes": ".gitattributes",
-    ".editorconfig": ".editorconfig",
     "cobo.lock": "cobo.lock",
 }
+# Plain files the generated repository's cobo workflow does not track.
+TEMPLATE_OWNED = {".gitattributes": ".gitattributes", ".editorconfig": ".editorconfig"}
 
 
 def test_update_leaves_cobo_managed_files_alone(tmp_path, versioned_template):
     dest = tmp_path / "project"
     result = copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
     assert result.returncode == 0, result.stderr
-    for rendered in COBO_MANAGED:
+    for rendered in [*COBO_MANAGED, *TEMPLATE_OWNED]:
         assert (dest / rendered).is_file(), rendered
     git("init", "-q", "-b", "main", cwd=dest)
     git("add", "-A", cwd=dest)
@@ -82,7 +82,7 @@ def test_update_leaves_cobo_managed_files_alone(tmp_path, versioned_template):
         (dest / rendered).write_text("# cobo-managed\n")
     git("commit", "-q", "-am", "chore: manage boilerplate with cobo", cwd=dest)
 
-    for source in COBO_MANAGED.values():
+    for source in [*COBO_MANAGED.values(), *TEMPLATE_OWNED.values()]:
         path = versioned_template / "template" / source
         path.write_text(path.read_text() + "# added in v0.0.1\n")
     git("commit", "-q", "-am", "feat: extend the boilerplate", cwd=versioned_template)
@@ -92,5 +92,5 @@ def test_update_leaves_cobo_managed_files_alone(tmp_path, versioned_template):
     assert result.returncode == 0, result.stderr
     for rendered in COBO_MANAGED:
         assert (dest / rendered).read_text() == "# cobo-managed\n", rendered
-    changed = {line[3:] for line in git("status", "--porcelain", cwd=dest).stdout.splitlines()}
-    assert changed == {".copier-answers.yml"}
+    for rendered in TEMPLATE_OWNED:
+        assert "# added in v0.0.1" in (dest / rendered).read_text(), rendered
