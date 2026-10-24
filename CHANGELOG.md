@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.4...v0.2.0) (2026-10-24)
+
+
+### 🚀 Features
+
+* add a back reference to the template in the generated README ([#56](https://github.com/hasansezertasan/copier-homebrew-tap/issues/56)) ([323e827](https://github.com/hasansezertasan/copier-homebrew-tap/commit/323e8274aba8c9b911af5ef552a966a214359876))
+* leave the cobo-managed gitignore and lockfile to the generated repository ([#59](https://github.com/hasansezertasan/copier-homebrew-tap/issues/59)) ([78f3c14](https://github.com/hasansezertasan/copier-homebrew-tap/commit/78f3c14430335466ad2c1f8a359ed8a646565f16))
+
+
+### 📝 Documentation
+
+* document adopting over an existing gitignore and the cobo pair ([#60](https://github.com/hasansezertasan/copier-homebrew-tap/issues/60)) ([1db930b](https://github.com/hasansezertasan/copier-homebrew-tap/commit/1db930b06dc8baee898af36d2989ee7f309ea4d2))
+* put the template back reference under a Credits heading ([#58](https://github.com/hasansezertasan/copier-homebrew-tap/issues/58)) ([e4d5a49](https://github.com/hasansezertasan/copier-homebrew-tap/commit/e4d5a491784e85f2ab5fdbf880ce35b5bd539b63))
+
 ## [0.1.4](https://github.com/hasansezertasan/copier-homebrew-tap/compare/v0.1.3...v0.1.4) (2026-10-23)
 
 
