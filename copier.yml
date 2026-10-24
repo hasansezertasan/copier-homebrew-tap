@@ -2,6 +2,15 @@ _subdirectory: template
 _templates_suffix: .jinja
 _min_copier_version: "9.4.0"
 _answers_file: .copier-answers.yml
+
+# Seeded once, then owned by the generated repository: its weekly cobo workflow rewrites
+# the sealed `.gitignore` block and `cobo.lock`, so `copier update` must not merge the
+# template's copies into them. `.gitattributes` and `.editorconfig` are not cobo-managed
+# there (its `cobo.lock` tracks only `.gitignore`), so they stay under Copier's ownership.
+# See docs/adr/0011-leave-cobo-managed-files-to-the-repository.md.
+_skip_if_exists:
+  - .gitignore
+  - cobo.lock
 _message_after_copy: |
   Tap "{{ tap_owner }}/{{ tap_name }}" generated in {{ _copier_conf.dst_path }}.
   Next: `git init`, add an `origin` remote named `{{ tap_repository }}`, then
