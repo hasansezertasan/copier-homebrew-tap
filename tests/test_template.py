@@ -26,7 +26,7 @@ def test_readme_links_back_to_the_template(tmp_path, versioned_template):
     dest = tmp_path / "project"
     copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
     assert (dest / "README.md").read_text().rstrip().endswith(
-        "Generated from [copier-homebrew-tap](https://github.com/hasansezertasan/copier-homebrew-tap)."
+        "## Credits\n\nGenerated from [copier-homebrew-tap](https://github.com/hasansezertasan/copier-homebrew-tap)."
     )
 
 
