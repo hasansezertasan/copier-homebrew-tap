@@ -57,3 +57,40 @@ def test_formula_dispatch_reports_a_failed_bump_as_an_issue():
     last = job["steps"][-1]
     assert last["if"] == "failure()"
     assert "gh issue create" in last["run"]
+
+
+# Rendered name -> the template file it comes from.
+COBO_MANAGED = {
+    ".gitignore": ".gitignore.jinja",
+    ".gitattributes": ".gitattributes",
+    ".editorconfig": ".editorconfig",
+    "cobo.lock": "cobo.lock",
+}
+
+
+def test_update_leaves_cobo_managed_files_alone(tmp_path, versioned_template):
+    dest = tmp_path / "project"
+    result = copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    for rendered in COBO_MANAGED:
+        assert (dest / rendered).is_file(), rendered
+    git("init", "-q", "-b", "main", cwd=dest)
+    git("add", "-A", cwd=dest)
+    git("commit", "-q", "-m", "chore: render", cwd=dest)
+
+    for rendered in COBO_MANAGED:
+        (dest / rendered).write_text("# cobo-managed\n")
+    git("commit", "-q", "-am", "chore: manage boilerplate with cobo", cwd=dest)
+
+    for source in COBO_MANAGED.values():
+        path = versioned_template / "template" / source
+        path.write_text(path.read_text() + "# added in v0.0.1\n")
+    git("commit", "-q", "-am", "feat: extend the boilerplate", cwd=versioned_template)
+    git("tag", "v0.0.1", cwd=versioned_template)
+
+    result = copier("update", "--defaults", "--skip-answered", cwd=dest)
+    assert result.returncode == 0, result.stderr
+    for rendered in COBO_MANAGED:
+        assert (dest / rendered).read_text() == "# cobo-managed\n", rendered
+    changed = {line[3:] for line in git("status", "--porcelain", cwd=dest).stdout.splitlines()}
+    assert changed == {".copier-answers.yml"}
