@@ -22,6 +22,14 @@ def test_rendered_gitignore_keeps_the_carriage_return_patterns(tmp_path, version
     assert b".HFS+ Private Directory Data[\r]" in lines
 
 
+def test_readme_links_back_to_the_template(tmp_path, versioned_template):
+    dest = tmp_path / "project"
+    copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
+    assert (dest / "README.md").read_text().rstrip().endswith(
+        "Generated from [copier-homebrew-tap](https://github.com/hasansezertasan/copier-homebrew-tap)."
+    )
+
+
 def test_update_to_a_new_version_only_moves_the_answers_commit(tmp_path, versioned_template):
     dest = tmp_path / "project"
     copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
