@@ -94,3 +94,27 @@ def test_update_leaves_cobo_managed_files_alone(tmp_path, versioned_template):
         assert (dest / rendered).read_text() == "# cobo-managed\n", rendered
     for rendered in TEMPLATE_OWNED:
         assert "# added in v0.0.1" in (dest / rendered).read_text(), rendered
+
+
+def test_update_reseeds_a_deleted_cobo_managed_file(tmp_path, versioned_template):
+    dest = tmp_path / "project"
+    result = copier("copy", "--defaults", *ANSWERS, str(versioned_template), str(dest), cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    git("init", "-q", "-b", "main", cwd=dest)
+    git("add", "-A", cwd=dest)
+    git("commit", "-q", "-m", "chore: render", cwd=dest)
+
+    for rendered in COBO_MANAGED:
+        (dest / rendered).unlink()
+    git("commit", "-q", "-am", "chore: delete the cobo-managed files", cwd=dest)
+
+    for source in COBO_MANAGED.values():
+        path = versioned_template / "template" / source
+        path.write_text(path.read_text() + "# added in v0.0.1\n")
+    git("commit", "-q", "-am", "feat: extend the boilerplate", cwd=versioned_template)
+    git("tag", "v0.0.1", cwd=versioned_template)
+
+    result = copier("update", "--defaults", "--skip-answered", cwd=dest)
+    assert result.returncode == 0, result.stderr
+    for rendered in COBO_MANAGED:
+        assert "# added in v0.0.1" in (dest / rendered).read_text(), rendered
