@@ -37,7 +37,7 @@ template changes.
   existing `.gitignore` is kept beside the freshly written `cobo.lock`, and the pair no longer
   matches. Copier evaluates `_skip_if_exists` patterns without `_copier_operation`, so the skip
   cannot be limited to updates. The adoption section of the README says to delete the
-  existing `.gitignore` before rendering.
+  existing `.gitignore` and `cobo.lock` before rendering.
 * Bad, because `.gitignore` and `cobo.lock` are reseeded independently: if a repository
   deletes only one of them and updates after the template's cobo inputs changed, the old
   and new halves no longer match. `cobo check --strict` reports it, and re-running
